@@ -39,8 +39,8 @@ class LeaseholdHttpAPIModule extends BaseModule {
 	static get info() {
 		return {
 			author: 'Jonathan Gros-Dubois',
-			version: '1.0.0',
-			name: 'leasehold-http-api',
+			version: '1.0.1',
+			name: 'leasehold_http_api',
 		};
 	}
 
