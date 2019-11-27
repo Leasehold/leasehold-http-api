@@ -1,2 +1,2 @@
-# capitalisk-http-api
-HTTP API module for Capitalisk sidechain
+# leasehold-http-api
+HTTP API module for Leasehold sidechain

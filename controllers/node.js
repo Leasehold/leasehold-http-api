@@ -34,7 +34,7 @@ let library;
  */
 async function _getForgingStatus(publicKey) {
 	const fullList = await library.channel.invoke(
-		'capitalisk:getForgingStatusForAllDelegates',
+		'leasehold:getForgingStatusForAllDelegates',
 	);
 
 	if (publicKey && !_.find(fullList, { publicKey })) {
@@ -64,8 +64,8 @@ async function _getNetworkHeight() {
 		return 0;
 	}
 	const networkHeightCount = peers.filter(peer => !!peer.modules).reduce((previous, { modules }) => {
-		const capitalisk = modules ? modules.capitalisk : {};
-		const height = capitalisk.height || 0;
+		const leasehold = modules ? modules.leasehold : {};
+		const height = leasehold.height || 0;
 		const heightCount = previous[height] || 0;
 		previous[height] = heightCount + 1;
 		return previous;
@@ -202,14 +202,14 @@ NodeController.getConstants = async (context, next) => {
 	}
 
 	try {
-		const { lastBlock } = await library.channel.invoke('capitalisk:getNodeStatus');
-		const milestone = await library.channel.invoke('capitalisk:calculateMilestone', {
+		const { lastBlock } = await library.channel.invoke('leasehold:getNodeStatus');
+		const milestone = await library.channel.invoke('leasehold:calculateMilestone', {
 			height: lastBlock.height,
 		});
-		const reward = await library.channel.invoke('capitalisk:calculateReward', {
+		const reward = await library.channel.invoke('leasehold:calculateReward', {
 			height: lastBlock.height,
 		});
-		const supply = await library.channel.invoke('capitalisk:calculateSupply', {
+		const supply = await library.channel.invoke('leasehold:calculateSupply', {
 			height: lastBlock.height,
 		});
 
@@ -258,7 +258,7 @@ NodeController.getStatus = async (context, next) => {
 			syncing,
 			unconfirmedTransactions,
 			lastBlock,
-		} = await library.channel.invoke('capitalisk:getNodeStatus');
+		} = await library.channel.invoke('leasehold:getNodeStatus');
 
 		// get confirmed count from cache or chain
 
@@ -339,7 +339,7 @@ NodeController.updateForgingStatus = async (context, next) => {
 	const { forging } = context.request.swagger.params.data.value;
 
 	try {
-		const data = await library.channel.invoke('capitalisk:updateForgingStatus', {
+		const data = await library.channel.invoke('leasehold:updateForgingStatus', {
 			publicKey,
 			password,
 			forging,
@@ -385,7 +385,7 @@ NodeController.getPooledTransactions = async function(context, next) {
 	filters = _.pickBy(filters, v => !(v === undefined || v === null));
 
 	try {
-		const data = await library.channel.invoke('capitalisk:getTransactionsFromPool', {
+		const data = await library.channel.invoke('leasehold:getTransactionsFromPool', {
 			type: state,
 			filters: _.clone(filters),
 		});

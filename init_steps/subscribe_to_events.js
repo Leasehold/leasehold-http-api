@@ -15,25 +15,25 @@
 'use strict';
 
 module.exports = ({ channel }, { wsServer }) => {
-	channel.subscribe('capitalisk:blocks:change', event => {
+	channel.subscribe('leasehold:blocks:change', event => {
 		wsServer.sockets.emit('blocks/change', event.data);
 	});
-	channel.subscribe('capitalisk:signature:change', event => {
+	channel.subscribe('leasehold:signature:change', event => {
 		wsServer.sockets.emit('signature/change', event.data);
 	});
-	channel.subscribe('capitalisk:transactions:change', event => {
+	channel.subscribe('leasehold:transactions:change', event => {
 		wsServer.sockets.emit('transactions/change', event.data);
 	});
-	channel.subscribe('capitalisk:rounds:change', event => {
+	channel.subscribe('leasehold:rounds:change', event => {
 		wsServer.sockets.emit('rounds/change', event.data);
 	});
-	channel.subscribe('capitalisk:multisignatures:signature:change', event => {
+	channel.subscribe('leasehold:multisignatures:signature:change', event => {
 		wsServer.sockets.emit('multisignatures/signature/change', event.data);
 	});
-	channel.subscribe('capitalisk:delegates:fork', event => {
+	channel.subscribe('leasehold:delegates:fork', event => {
 		wsServer.sockets.emit('delegates/fork', event.data);
 	});
-	channel.subscribe('capitalisk:loader:sync', event => {
+	channel.subscribe('leasehold:loader:sync', event => {
 		wsServer.sockets.emit('loader/sync', event.data);
 	});
 };

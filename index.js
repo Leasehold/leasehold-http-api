@@ -24,23 +24,23 @@ const { config: defaultConfig } = require('./defaults');
  * Http API module specification
  *
  * @namespace Framework.Modules
- * @type {module.CapitaliskHttpAPIModule}
+ * @type {module.LeaseholdHttpAPIModule}
  */
-class CapitaliskHttpAPIModule extends BaseModule {
+class LeaseholdHttpAPIModule extends BaseModule {
 	constructor(options) {
 		super({...defaultConfig.default, ...options});
 		this.httpApi = null;
 	}
 
 	static get alias() {
-		return 'capitalisk_http_api';
+		return 'leasehold_http_api';
 	}
 
 	static get info() {
 		return {
 			author: 'Jonathan Gros-Dubois',
 			version: '1.0.0',
-			name: 'capitalisk-http-api',
+			name: 'leasehold-http-api',
 		};
 	}
 
@@ -69,4 +69,4 @@ class CapitaliskHttpAPIModule extends BaseModule {
 	}
 }
 
-module.exports = CapitaliskHttpAPIModule;
+module.exports = LeaseholdHttpAPIModule;

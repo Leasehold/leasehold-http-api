@@ -1,5 +1,5 @@
 {
-  "name": "capitalisk-http-api",
+  "name": "leasehold-http-api",
   "version": "1.0.9",
   "description": "",
   "main": "index.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jondubois/capitalisk-http-api.git"
+    "url": "git+ssh://git@github.com/Leasehold/leasehold-http-api.git"
   },
   "keywords": [
     "http",
     "api",
-    "capitalisk",
+    "leasehold",
     "lisk"
   ],
   "author": "Jonathan Gros-Dubois",
@@ -23,7 +23,7 @@
     "swagger-node-runner": "^0.7.3"
   },
   "bugs": {
-    "url": "https://github.com/jondubois/capitalisk-http-api/issues"
+    "url": "https://github.com/Leasehold/leasehold-http-api/issues"
   },
-  "homepage": "https://github.com/jondubois/capitalisk-http-api#readme"
+  "homepage": "https://github.com/Leasehold/leasehold-http-api#readme"
 }

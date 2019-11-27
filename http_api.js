@@ -71,12 +71,12 @@ module.exports = class HttpApi {
 			'app:getComponentConfig',
 			'storage',
 		);
-		const capitaliskModuleOptions = await this.channel.invoke(
-			'capitalisk:getModuleOptions'
+		const leaseholdModuleOptions = await this.channel.invoke(
+			'leasehold:getModuleOptions'
 		);
 		const storageConfig = {
 			...storageConfigOptions,
-			database: capitaliskModuleOptions.database
+			database: leaseholdModuleOptions.database
 		};
 
 		const dbLogger =
@@ -112,14 +112,14 @@ module.exports = class HttpApi {
 			Object.assign(this.scope.applicationState, event.data);
 		});
 
-		this.channel.subscribe('capitalisk:blocks:change', async event => {
+		this.channel.subscribe('leasehold:blocks:change', async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_BLOCKS, CACHE_KEYS_TRANSACTIONS],
 				`${event.module}:${event.name}`,
 			);
 		});
 
-		this.channel.subscribe('capitalisk:rounds:change', async event => {
+		this.channel.subscribe('leasehold:rounds:change', async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_DELEGATES],
 				`${event.module}:${event.name}`,
@@ -127,7 +127,7 @@ module.exports = class HttpApi {
 		});
 
 		this.channel.subscribe(
-			'capitalisk:transactions:confirmed:change',
+			'leasehold:transactions:confirmed:change',
 			async event => {
 				const transactions = event.data;
 				// Default keys to clear
