@@ -64,7 +64,7 @@ async function _getNetworkHeight() {
 		return 0;
 	}
 	const networkHeightCount = peers.filter(peer => !!peer.modules).reduce((previous, { modules }) => {
-		const leasehold = modules ? modules.leasehold : {};
+		const leasehold = modules ? modules.leasehold || {} : {};
 		const height = leasehold.height || 0;
 		const heightCount = previous[height] || 0;
 		previous[height] = heightCount + 1;
@@ -203,14 +203,15 @@ NodeController.getConstants = async (context, next) => {
 
 	try {
 		const { lastBlock } = await library.channel.invoke('leasehold:getNodeStatus');
+    const { height } = lastBlock || {};
 		const milestone = await library.channel.invoke('leasehold:calculateMilestone', {
-			height: lastBlock.height,
+			height,
 		});
 		const reward = await library.channel.invoke('leasehold:calculateReward', {
-			height: lastBlock.height,
+			height,
 		});
 		const supply = await library.channel.invoke('leasehold:calculateSupply', {
-			height: lastBlock.height,
+			height,
 		});
 
 		const { buildVersion: build, lastCommitId: commit } = library;
@@ -278,7 +279,7 @@ NodeController.getStatus = async (context, next) => {
 			consensus: consensus || 0,
 			currentTime: Date.now(),
 			secondsSinceEpoch,
-			height: lastBlock.height || 0,
+			height: (lastBlock || {}).height || 0,
 			loaded,
 			networkHeight,
 			syncing,
