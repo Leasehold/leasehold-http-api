@@ -203,7 +203,7 @@ NodeController.getConstants = async (context, next) => {
 
 	try {
 		const { lastBlock } = await library.channel.invoke('leasehold:getNodeStatus');
-    const { height } = lastBlock || {};
+		const { height } = lastBlock || {};
 		const milestone = await library.channel.invoke('leasehold:calculateMilestone', {
 			height,
 		});
