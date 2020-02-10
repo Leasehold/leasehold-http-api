@@ -15,25 +15,25 @@
 'use strict';
 
 module.exports = ({ channel }, { wsServer }) => {
-	channel.subscribe('leasehold:blocks:change', event => {
+	channel.subscribe('leasehold_chain:blocks:change', event => {
 		wsServer.sockets.emit('blocks/change', event.data);
 	});
-	channel.subscribe('leasehold:signature:change', event => {
+	channel.subscribe('leasehold_chain:signature:change', event => {
 		wsServer.sockets.emit('signature/change', event.data);
 	});
-	channel.subscribe('leasehold:transactions:change', event => {
+	channel.subscribe('leasehold_chain:transactions:change', event => {
 		wsServer.sockets.emit('transactions/change', event.data);
 	});
-	channel.subscribe('leasehold:rounds:change', event => {
+	channel.subscribe('leasehold_chain:rounds:change', event => {
 		wsServer.sockets.emit('rounds/change', event.data);
 	});
-	channel.subscribe('leasehold:multisignatures:signature:change', event => {
+	channel.subscribe('leasehold_chain:multisignatures:signature:change', event => {
 		wsServer.sockets.emit('multisignatures/signature/change', event.data);
 	});
-	channel.subscribe('leasehold:delegates:fork', event => {
+	channel.subscribe('leasehold_chain:delegates:fork', event => {
 		wsServer.sockets.emit('delegates/fork', event.data);
 	});
-	channel.subscribe('leasehold:loader:sync', event => {
+	channel.subscribe('leasehold_chain:loader:sync', event => {
 		wsServer.sockets.emit('loader/sync', event.data);
 	});
 };

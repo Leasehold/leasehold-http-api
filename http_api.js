@@ -72,7 +72,7 @@ module.exports = class HttpApi {
 			'storage',
 		);
 		const leaseholdModuleOptions = await this.channel.invoke(
-			'leasehold:getModuleOptions'
+			'leasehold_chain:getModuleOptions'
 		);
 		const storageConfig = {
 			...storageConfigOptions,
@@ -112,14 +112,14 @@ module.exports = class HttpApi {
 			Object.assign(this.scope.applicationState, event.data);
 		});
 
-		this.channel.subscribe('leasehold:blocks:change', async event => {
+		this.channel.subscribe('leasehold_chain:blocks:change', async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_BLOCKS, CACHE_KEYS_TRANSACTIONS],
 				`${event.module}:${event.name}`,
 			);
 		});
 
-		this.channel.subscribe('leasehold:rounds:change', async event => {
+		this.channel.subscribe('leasehold_chain:rounds:change', async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_DELEGATES],
 				`${event.module}:${event.name}`,
@@ -127,7 +127,7 @@ module.exports = class HttpApi {
 		});
 
 		this.channel.subscribe(
-			'leasehold:transactions:confirmed:change',
+			'leasehold_chain:transactions:confirmed:change',
 			async event => {
 				const transactions = event.data;
 				// Default keys to clear

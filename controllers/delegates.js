@@ -65,10 +65,10 @@ async function _getDelegates(filters, options) {
 		options,
 	);
 
-	const { lastBlock } = await channel.invoke('leasehold:getNodeStatus');
+	const { lastBlock } = await channel.invoke('leasehold_chain:getNodeStatus');
 
 	const supply = lastBlock.height
-		? await channel.invoke('leasehold:calculateSupply', {
+		? await channel.invoke('leasehold_chain:calculateSupply', {
 				height: lastBlock.height,
 		  })
 		: 0;
@@ -86,19 +86,19 @@ async function _getDelegates(filters, options) {
  * @private
  */
 async function _getForgers(filters) {
-	const { lastBlock } = await channel.invoke('leasehold:getNodeStatus');
+	const { lastBlock } = await channel.invoke('leasehold_chain:getNodeStatus');
 
-	const lastBlockSlot = await channel.invoke('leasehold:getSlotNumber', {
+	const lastBlockSlot = await channel.invoke('leasehold_chain:getSlotNumber', {
 		epochTime: lastBlock.timestamp,
 	});
-	const currentSlot = await channel.invoke('leasehold:getSlotNumber');
+	const currentSlot = await channel.invoke('leasehold_chain:getSlotNumber');
 	const forgerKeys = [];
 
-	const round = await channel.invoke('leasehold:calcSlotRound', {
+	const round = await channel.invoke('leasehold_chain:calcSlotRound', {
 		height: lastBlock.height + 1,
 	});
 
-	const activeDelegates = await channel.invoke('leasehold:generateDelegateList', {
+	const activeDelegates = await channel.invoke('leasehold_chain:generateDelegateList', {
 		round,
 	});
 
@@ -182,7 +182,7 @@ async function _aggregateBlocksReward(filter) {
 
 	try {
 		delegateBlocksRewards = await channel.invoke(
-			'leasehold:getDelegateBlocksRewards',
+			'leasehold_chain:getDelegateBlocksRewards',
 			{ filters: params },
 		);
 	} catch (err) {

@@ -34,7 +34,7 @@ let library;
  */
 async function _getForgingStatus(publicKey) {
 	const fullList = await library.channel.invoke(
-		'leasehold:getForgingStatusForAllDelegates',
+		'leasehold_chain:getForgingStatusForAllDelegates',
 	);
 
 	if (publicKey && !_.find(fullList, { publicKey })) {
@@ -202,15 +202,15 @@ NodeController.getConstants = async (context, next) => {
 	}
 
 	try {
-		const { lastBlock } = await library.channel.invoke('leasehold:getNodeStatus');
+		const { lastBlock } = await library.channel.invoke('leasehold_chain:getNodeStatus');
 		const { height } = lastBlock || {};
-		const milestone = await library.channel.invoke('leasehold:calculateMilestone', {
+		const milestone = await library.channel.invoke('leasehold_chain:calculateMilestone', {
 			height,
 		});
-		const reward = await library.channel.invoke('leasehold:calculateReward', {
+		const reward = await library.channel.invoke('leasehold_chain:calculateReward', {
 			height,
 		});
-		const supply = await library.channel.invoke('leasehold:calculateSupply', {
+		const supply = await library.channel.invoke('leasehold_chain:calculateSupply', {
 			height,
 		});
 
@@ -259,7 +259,7 @@ NodeController.getStatus = async (context, next) => {
 			syncing,
 			unconfirmedTransactions,
 			lastBlock,
-		} = await library.channel.invoke('leasehold:getNodeStatus');
+		} = await library.channel.invoke('leasehold_chain:getNodeStatus');
 
 		// get confirmed count from cache or chain
 
@@ -340,7 +340,7 @@ NodeController.updateForgingStatus = async (context, next) => {
 	const { forging } = context.request.swagger.params.data.value;
 
 	try {
-		const data = await library.channel.invoke('leasehold:updateForgingStatus', {
+		const data = await library.channel.invoke('leasehold_chain:updateForgingStatus', {
 			publicKey,
 			password,
 			forging,
@@ -386,7 +386,7 @@ NodeController.getPooledTransactions = async function(context, next) {
 	filters = _.pickBy(filters, v => !(v === undefined || v === null));
 
 	try {
-		const data = await library.channel.invoke('leasehold:getTransactionsFromPool', {
+		const data = await library.channel.invoke('leasehold_chain:getTransactionsFromPool', {
 			type: state,
 			filters: _.clone(filters),
 		});
