@@ -32,6 +32,10 @@ class LeaseholdHttpAPIModule extends BaseModule {
 		this.httpApi = null;
 	}
 
+	static get dependencies() {
+		return ['leasehold_chain'];
+	}
+
 	static get alias() {
 		return 'leasehold_http_api';
 	}
