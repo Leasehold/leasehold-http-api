@@ -33,7 +33,7 @@ class LeaseholdHttpAPIModule extends BaseModule {
 	}
 
 	static get dependencies() {
-		return ['leasehold_chain'];
+		return ['app', 'network', 'leasehold_chain'];
 	}
 
 	static get alias() {
