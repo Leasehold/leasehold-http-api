@@ -22,6 +22,7 @@ const { calculateApproval } = require('../helpers/utils');
 // Private Fields
 let storage;
 let channel;
+let chainModuleAlias;
 
 /**
  * Description of the function.
@@ -36,7 +37,7 @@ let channel;
  */
 function AccountsController(scope) {
 	({ storage } = scope.components);
-	({ channel } = scope);
+	({ channel, chainModuleAlias } = scope);
 }
 
 function accountFormatter(totalSupply, account) {
@@ -111,12 +112,12 @@ AccountsController.getAccounts = async function(context, next) {
 	filters = _.pickBy(filters, v => !(v === undefined || v === null));
 
 	try {
-		const { lastBlock } = await channel.invoke('leasehold_chain:getNodeStatus');
+		const { lastBlock } = await channel.invoke(`${chainModuleAlias}:getNodeStatus`);
 		const data = await storage.entities.Account.get(filters, options).map(
 			accountFormatter.bind(
 				null,
 				lastBlock.height
-					? await channel.invoke('leasehold_chain:calculateSupply', {
+					? await channel.invoke(`${chainModuleAlias}:calculateSupply`, {
 							height: lastBlock.height,
 					  })
 					: 0,

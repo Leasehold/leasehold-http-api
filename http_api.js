@@ -42,6 +42,7 @@ module.exports = class HttpApi {
 		options.root = __dirname; // TODO: See wy root comes defined for the chain module.
 		this.channel = channel;
 		this.options = options;
+		this.chainModuleAlias = this.options.chainModuleAlias;
 		this.logger = null;
 		this.scope = null;
 	}
@@ -72,7 +73,7 @@ module.exports = class HttpApi {
 			'storage',
 		);
 		const leaseholdModuleOptions = await this.channel.invoke(
-			'leasehold_chain:getModuleOptions'
+			`${this.chainModuleAlias}:getModuleOptions`
 		);
 		const storageConfig = {
 			...storageConfigOptions,
@@ -101,6 +102,7 @@ module.exports = class HttpApi {
 				logger: this.logger,
 				storage,
 			},
+			chainModuleAlias: this.chainModuleAlias,
 			channel: this.channel,
 			config: this.options,
 			lastCommitId: this.options.lastCommitId,
@@ -112,14 +114,14 @@ module.exports = class HttpApi {
 			Object.assign(this.scope.applicationState, event.data);
 		});
 
-		this.channel.subscribe('leasehold_chain:blocks:change', async event => {
+		this.channel.subscribe(`${this.chainModuleAlias}:blocks:change`, async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_BLOCKS, CACHE_KEYS_TRANSACTIONS],
 				`${event.module}:${event.name}`,
 			);
 		});
 
-		this.channel.subscribe('leasehold_chain:rounds:change', async event => {
+		this.channel.subscribe(`${this.chainModuleAlias}:rounds:change`, async event => {
 			await this.cleanCache(
 				[CACHE_KEYS_DELEGATES],
 				`${event.module}:${event.name}`,
@@ -127,7 +129,7 @@ module.exports = class HttpApi {
 		});
 
 		this.channel.subscribe(
-			'leasehold_chain:transactions:confirmed:change',
+			`${this.chainModuleAlias}:transactions:confirmed:change`,
 			async event => {
 				const transactions = event.data;
 				// Default keys to clear

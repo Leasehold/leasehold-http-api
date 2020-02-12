@@ -24,6 +24,7 @@ const { TRANSACTION_TYPES } = global.constants;
 // Private Fields
 let storage;
 let channel;
+let chainModuleAlias;
 
 /**
  * Description of the function.
@@ -41,6 +42,7 @@ function TransactionsController(scope) {
 	({
 		components: { storage },
 		channel,
+		chainModuleAlias,
 	} = scope);
 }
 
@@ -140,7 +142,7 @@ TransactionsController.postTransaction = async function(context, next) {
 	let error;
 
 	try {
-		const data = await channel.invoke('leasehold_chain:postTransaction', { transaction });
+		const data = await channel.invoke(`${chainModuleAlias}:postTransaction`, { transaction });
 
 		if (data.success) {
 			return next(null, {

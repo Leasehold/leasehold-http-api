@@ -19,6 +19,7 @@ const apiCodes = require('../api_codes');
 
 // Private Fields
 let channel;
+let chainModuleAlias;
 
 /**
  * Description of the function.
@@ -31,7 +32,7 @@ let channel;
  * @todo Add description of SignaturesController
  */
 function SignaturesController(scope) {
-	({ channel } = scope);
+	({ channel, chainModuleAlias } = scope);
 }
 
 /**
@@ -46,7 +47,7 @@ SignaturesController.postSignature = async function(context, next) {
 	let error;
 
 	try {
-		const data = await channel.invoke('leasehold_chain:postSignature', { signature });
+		const data = await channel.invoke(`${chainModuleAlias}:postSignature`, { signature });
 
 		if (data.success) {
 			return next(null, {

@@ -24,6 +24,7 @@ const { calculateApproval } = require('../helpers/utils');
 let storage;
 let logger;
 let channel;
+let chainModuleAlias;
 const { EPOCH_TIME, ACTIVE_DELEGATES } = global.constants;
 
 function delegateFormatter(totalSupply, delegate) {
@@ -65,10 +66,10 @@ async function _getDelegates(filters, options) {
 		options,
 	);
 
-	const { lastBlock } = await channel.invoke('leasehold_chain:getNodeStatus');
+	const { lastBlock } = await channel.invoke(`${chainModuleAlias}:getNodeStatus`);
 
 	const supply = lastBlock.height
-		? await channel.invoke('leasehold_chain:calculateSupply', {
+		? await channel.invoke(`${chainModuleAlias}:calculateSupply`, {
 				height: lastBlock.height,
 		  })
 		: 0;
@@ -86,19 +87,19 @@ async function _getDelegates(filters, options) {
  * @private
  */
 async function _getForgers(filters) {
-	const { lastBlock } = await channel.invoke('leasehold_chain:getNodeStatus');
+	const { lastBlock } = await channel.invoke(`${chainModuleAlias}:getNodeStatus`);
 
-	const lastBlockSlot = await channel.invoke('leasehold_chain:getSlotNumber', {
+	const lastBlockSlot = await channel.invoke(`${chainModuleAlias}:getSlotNumber`, {
 		epochTime: lastBlock.timestamp,
 	});
-	const currentSlot = await channel.invoke('leasehold_chain:getSlotNumber');
+	const currentSlot = await channel.invoke(`${chainModuleAlias}:getSlotNumber`);
 	const forgerKeys = [];
 
-	const round = await channel.invoke('leasehold_chain:calcSlotRound', {
+	const round = await channel.invoke(`${chainModuleAlias}:calcSlotRound`, {
 		height: lastBlock.height + 1,
 	});
 
-	const activeDelegates = await channel.invoke('leasehold_chain:generateDelegateList', {
+	const activeDelegates = await channel.invoke(`${chainModuleAlias}:generateDelegateList`, {
 		round,
 	});
 
@@ -182,7 +183,7 @@ async function _aggregateBlocksReward(filter) {
 
 	try {
 		delegateBlocksRewards = await channel.invoke(
-			'leasehold_chain:getDelegateBlocksRewards',
+			`${chainModuleAlias}:getDelegateBlocksRewards`,
 			{ filters: params },
 		);
 	} catch (err) {
@@ -267,6 +268,7 @@ function DelegatesController(scope) {
 	({
 		components: { storage, logger },
 		channel,
+		chainModuleAlias
 	} = scope);
 }
 

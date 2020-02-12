@@ -17,6 +17,9 @@
 const HttpApi = require('./http_api');
 const BaseModule = require('lisk-framework/src/modules/base_module');
 const { config: defaultConfig } = require('./defaults');
+const pkg = require('./package.json');
+
+const DEFAULT_ALIAS = 'leasehold_http_api';
 
 /* eslint-disable class-methods-use-this */
 
@@ -29,22 +32,27 @@ const { config: defaultConfig } = require('./defaults');
 class LeaseholdHttpAPIModule extends BaseModule {
 	constructor(options) {
 		super({...defaultConfig.default, ...options});
+		if (!options) {
+			options = {};
+		}
+		this.alias = options.alias;
+		this.options = options.config;
 		this.httpApi = null;
 	}
 
-	static get dependencies() {
-		return ['app', 'network', 'leasehold_chain'];
+	get dependencies() {
+		return ['app', 'network', this.options.chainModuleAlias];
 	}
 
 	static get alias() {
-		return 'leasehold_http_api';
+		return DEFAULT_ALIAS;
 	}
 
 	static get info() {
 		return {
 			author: 'Jonathan Gros-Dubois',
-			version: '1.0.1',
-			name: 'leasehold_http_api',
+			version: pkg.version,
+			name: DEFAULT_ALIAS,
 		};
 	}
 
