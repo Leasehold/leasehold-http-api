@@ -38,17 +38,18 @@ const {
 } = require('./init_steps');
 
 module.exports = class HttpApi {
-	constructor(channel, options) {
+	constructor(channel, options, appConfig) {
 		options.root = __dirname; // TODO: See wy root comes defined for the chain module.
 		this.channel = channel;
 		this.options = options;
 		this.chainModuleAlias = this.options.chainModuleAlias;
+		this.chainModuleConfig = appConfig.modules[this.chainModuleAlias];
 		this.logger = null;
 		this.scope = null;
 	}
 
 	async bootstrap() {
-		global.constants = this.options.constants;
+		global.constants = this.chainModuleConfig.constants;
 		const { TRANSACTION_TYPES } = global.constants;
 
 		// Logger
