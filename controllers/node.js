@@ -275,8 +275,12 @@ NodeController.getStatus = async (context, next) => {
 				0,
 			);
 
+		const modules = library.applicationState.modules || {};
+		const moduleInfo = modules[library.chainModuleAlias] || {};
+		const broadhash = moduleInfo.broadhash || library.applicationState.broadhash;
+
 		const data = {
-			broadhash: library.applicationState.broadhash,
+			broadhash,
 			consensus: consensus || 0,
 			currentTime: Date.now(),
 			secondsSinceEpoch,
